@@ -1,0 +1,11 @@
+PIPELINE:
+
+input: (ID,Text)
+
+-> estrarre (Aspect,Opinion), che sono categorie non conosciute che possiamo estrarre facendo un prompt adeguato da passare ad un LLM come LlaMA (NO fine-tuning, usare SOLO promt-tuning)
+
+-> estrarre (Category), facendo classificazione fra un elenco di categorie note (encoder + MLP)
+
+-> concatenere (Text,Aspect,Opinion,Category) e passarlo come InputText al modello dedicato all'estrazione del VA (2 valori numerici) (encoder come BERT multilingua)
+
+output: (ID,Text,Aspect,Opinion,Category,VA)
