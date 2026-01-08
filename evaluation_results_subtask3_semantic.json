@@ -4,24 +4,24 @@
   "pred_file": "pred_eng_restaurant_test_split_subtask3.jsonl",
   "embedding_model": "all-MiniLM-L6-v2",
   "metrics": {
-    "TP_cat": 284,
-    "cTP_semantic_total": 277.8711,
-    "FP_cat": 376,
-    "FN_cat": 267,
-    "cPrecision_semantic": 0.3904,
-    "cRecall_semantic": 0.4676,
-    "cF1_semantic": 0.4256,
-    "standard_precision": 0.4303,
-    "standard_recall": 0.5154,
-    "standard_f1": 0.469
+    "TP_cat": 291,
+    "cTP_semantic_total": 284.5007,
+    "FP_cat": 289,
+    "FN_cat": 260,
+    "cPrecision_semantic": 0.4565,
+    "cRecall_semantic": 0.4805,
+    "cF1_semantic": 0.4682,
+    "standard_precision": 0.5017,
+    "standard_recall": 0.5281,
+    "standard_f1": 0.5146
   },
   "comparison_with_va": {
-    "va_cF1": 0.3028,
-    "semantic_cF1": 0.4256,
-    "difference": 0.1227,
-    "improvement_pct": 40.53
+    "va_cF1": 0.3066,
+    "semantic_cF1": 0.4682,
+    "difference": 0.1616,
+    "improvement_pct": 52.72
   },
   "warnings": {
-    "duplicate_predictions": 21
+    "duplicate_predictions": 11
   }
 }
