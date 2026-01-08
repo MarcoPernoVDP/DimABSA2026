@@ -1,0 +1,27 @@
+{
+  "task": "Track A - Subtask 3 (DimASQP) - Semantic cTP Metric",
+  "gold_file": "task-dataset\\track_a\\subtask_3\\eng\\eng_restaurant_train_alltasks.jsonl",
+  "pred_file": "pred_eng_restaurant_test_split_subtask3.jsonl",
+  "embedding_model": "all-MiniLM-L6-v2",
+  "metrics": {
+    "TP_cat": 284,
+    "cTP_semantic_total": 277.8711,
+    "FP_cat": 376,
+    "FN_cat": 267,
+    "cPrecision_semantic": 0.3904,
+    "cRecall_semantic": 0.4676,
+    "cF1_semantic": 0.4256,
+    "standard_precision": 0.4303,
+    "standard_recall": 0.5154,
+    "standard_f1": 0.469
+  },
+  "comparison_with_va": {
+    "va_cF1": 0.3028,
+    "semantic_cF1": 0.4256,
+    "difference": 0.1227,
+    "improvement_pct": 40.53
+  },
+  "warnings": {
+    "duplicate_predictions": 21
+  }
+}
