@@ -1,0 +1,21 @@
+{
+  "task": "Track A - Subtask 3 (DimASQP)",
+  "gold_file": "task-dataset\\track_a\\subtask_3\\eng\\eng_restaurant_train_alltasks.jsonl",
+  "pred_file": "pred_eng_restaurant_test_split_subtask3.jsonl",
+  "metrics": {
+    "TP_cat": 194,
+    "cTP_total": 181.2428,
+    "FP_cat": 452,
+    "FN_cat": 357,
+    "cPrecision": 0.2806,
+    "cRecall": 0.3289,
+    "cF1": 0.3028,
+    "standard_precision": 0.3003,
+    "standard_recall": 0.3521,
+    "standard_f1": 0.3241
+  },
+  "warnings": {
+    "invalid_va_predictions": 0,
+    "duplicate_predictions": 0
+  }
+}
