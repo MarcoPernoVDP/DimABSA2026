@@ -1,27 +1,27 @@
 {
   "task": "Track A - Subtask 3 (DimASQP) - Semantic cTP Metric",
   "gold_file": "task-dataset\\track_a\\subtask_3\\eng\\eng_restaurant_train_alltasks.jsonl",
-  "pred_file": "pred_eng_restaurant_test_split_subtask3.jsonl",
+  "pred_file": "pred_eng_restaurant_test_split_subtask3 (2).jsonl",
   "embedding_model": "all-MiniLM-L6-v2",
   "metrics": {
-    "TP_cat": 291,
-    "cTP_semantic_total": 284.5007,
-    "FP_cat": 289,
-    "FN_cat": 260,
-    "cPrecision_semantic": 0.4565,
-    "cRecall_semantic": 0.4805,
-    "cF1_semantic": 0.4682,
-    "standard_precision": 0.5017,
-    "standard_recall": 0.5281,
-    "standard_f1": 0.5146
+    "TP_cat": 375,
+    "cTP_semantic_total": 371.9409,
+    "FP_cat": 172,
+    "FN_cat": 176,
+    "cPrecision_semantic": 0.633,
+    "cRecall_semantic": 0.6284,
+    "cF1_semantic": 0.6307,
+    "standard_precision": 0.6856,
+    "standard_recall": 0.6806,
+    "standard_f1": 0.6831
   },
   "comparison_with_va": {
-    "va_cF1": 0.3066,
-    "semantic_cF1": 0.4682,
-    "difference": 0.1616,
-    "improvement_pct": 52.72
+    "va_cF1": 0.5366,
+    "semantic_cF1": 0.6307,
+    "difference": 0.0941,
+    "improvement_pct": 17.54
   },
   "warnings": {
-    "duplicate_predictions": 11
+    "duplicate_predictions": 6
   }
 }
