@@ -1,0 +1,31 @@
+Abbiamo creato due pipeline per risolvere il problema dell'ABSA.
+Il primo è llama few shot senza fine tuning per AOC + bert model per VA,
+il secondo è llama fine tunizato con lora per AOC + bert model per VA.
+Abbiamo visto come con un semplice fine tuning le performance sulla metrica cTP definita nel readme.md
+porti a performance maggiori (53% vs 30.66%).
+Abbiamo introdotto anche un nuovo modo per valutare cf1 non basato su exact matching ma su
+significato semantico usando cossim tra ground truth di aspect, opinion e category con quelli predetti.
+Abbiamo usato soglia 0.9 per assegnare una predizione a un ground truth nella prima pipeline, 0.925 nella seconda.
+In entrambi casi i cf1 migliorano (46.82%, 63.07%). (dettagli di questo approccio 1. **Embeddings** per Aspect, Category e Opinion (sia predetti che gold)
+2. **Cosine Similarity** tra ciascuna coppia:
+   - `sim_aspect = cosine_similarity(embed(Aspect_pred), embed(Aspect_gold))`
+   - `sim_category = cosine_similarity(embed(Category_pred), embed(Category_gold))`
+   - `sim_opinion = cosine_similarity(embed(Opinion_pred), embed(Opinion_gold))`
+
+3. **Nuovo cTP**:
+   $$cTP_{semantic} = \frac{sim_{aspect} + sim_{category} + sim_{opinion}}{3}$$
+
+   Questo punteggio è compreso tra 0 e 1 (assumendo embeddings normalizzati).
+
+4. **Metriche finali** (combinando cTP semantico e VA distance):
+   
+   Le formule mantengono la **penalità VA distance** come nelle formule originali, ma usano il **cTP semantico** come base:
+   
+   $$cRecall_{semantic} = \frac{\sum_{t \in P_{cat}} cTP_{semantic}^{(t)} - \sum_{t \in P_{cat}} \text{dist}(VA_p^{(t)}, VA_g^{(t)})}{TP_{cat} + FN_{cat}}$$
+   
+   $$cPrecision_{semantic} = \frac{\sum_{t \in P_{cat}} cTP_{semantic}^{(t)} - \sum_{t \in P_{cat}} \text{dist}(VA_p^{(t)}, VA_g^{(t)})}{TP_{cat} + FP_{cat}}$$
+   
+   $$cF1_{semantic} = \frac{2 \times cRecall_{semantic} \times cPrecision_{semantic}}{cRecall_{semantic} + cPrecision_{semantic}}$$
+   
+   Dove $\text{dist}(VA_p, VA_g) = \frac{\sqrt{(V_p - V_g)^2 + (A_p - A_g)^2}}{\sqrt{128}}$ come nella metrica originale.)
+
