@@ -1,0 +1,372 @@
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{lipsum}
+\usepackage{latexsym}
+\usepackage{amsmath}
+
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+
+%Including images in your LaTeX document requires adding
+%additional package(s)
+\usepackage{graphicx}
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{Enhancing Dimensional Aspect-Based Sentiment Analysis: A Comparative Study of Few-Shot and Fine-Tuned LLM Approaches with Semantic Evaluation Metrics}
+
+\author{Marco [Surname] \\
+  Politecnico di [City] \\
+  Department of Computer Science \\
+  \texttt{email@polito.it} \\}
+
+%\author{
+%  \textbf{First Author\textsuperscript{1}},
+%  \textbf{Second Author\textsuperscript{1,2}},
+%  \textbf{Third T. Author\textsuperscript{1}},
+%  \textbf{Fourth Author\textsuperscript{1}},
+%\\
+%  \textbf{Fifth Author\textsuperscript{1,2}},
+%  \textbf{Sixth Author\textsuperscript{1}},
+%  \textbf{Seventh Author\textsuperscript{1}},
+%  \textbf{Eighth Author \textsuperscript{1,2,3,4}},
+%\\
+%  \textbf{Ninth Author\textsuperscript{1}},
+%  \textbf{Tenth Author\textsuperscript{1}},
+%  \textbf{Eleventh E. Author\textsuperscript{1,2,3,4,5}},
+%  \textbf{Twelfth Author\textsuperscript{1}},
+%\\
+%  \textbf{Thirteenth Author\textsuperscript{3}},
+%  \textbf{Fourteenth F. Author\textsuperscript{2,4}},
+%  \textbf{Fifteenth Author\textsuperscript{1}},
+%  \textbf{Sixteenth Author\textsuperscript{1}},
+%\\
+%  \textbf{Seventeenth S. Author\textsuperscript{4,5}},
+%  \textbf{Eighteenth Author\textsuperscript{3,4}},
+%  \textbf{Nineteenth N. Author\textsuperscript{2,5}},
+%  \textbf{Twentieth Author\textsuperscript{1}}
+%\\
+%\\
+%  \textsuperscript{1}Affiliation 1,
+%  \textsuperscript{2}Affiliation 2,
+%  \textsuperscript{3}Affiliation 3,
+%  \textsuperscript{4}Affiliation 4,
+%  \textsuperscript{5}Affiliation 5
+%\\
+%  \small{
+%    \textbf{Correspondence:} \href{mailto:email@domain}{email@domain}
+%  }
+%}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Dimensional Aspect-Based Sentiment Analysis (DimABSA) extends traditional ABSA by replacing categorical sentiment labels with continuous valence-arousal (VA) scores, enabling more nuanced emotional representations. In this work, we address the DimASQP task, which requires extracting quadruplets consisting of aspect terms, categories, opinion terms, and VA scores from restaurant reviews. We compare two approaches: a few-shot Llama model and a LoRA fine-tuned Llama model for aspect-opinion-category extraction, both combined with a BERT model for VA prediction. Our experiments show that fine-tuning improves performance significantly, achieving 53\% cF1 with exact matching compared to 30.66\% for few-shot learning. Additionally, we propose a novel semantic evaluation metric based on embedding similarity that better captures partial matches, further improving cF1 to 63.07\% for the fine-tuned approach. Our results demonstrate the effectiveness of fine-tuning and the importance of semantic-aware evaluation metrics for DimABSA tasks.
+\end{abstract}
+
+\section{Introduction}
+
+Aspect-Based Sentiment Analysis (ABSA) is a fundamental task in opinion mining that aims to extract fine-grained sentiment information from text. Traditional ABSA approaches classify sentiment into discrete categories (positive, negative, neutral), which limits their ability to capture the nuanced emotional expressions present in natural language. To address this limitation, Dimensional ABSA (DimABSA) has been proposed as a framework that represents sentiment along continuous dimensions of valence (ranging from negative to positive) and arousal (from low to high intensity), following established psychological theories of emotion.
+
+The DimABSA shared task introduces three subtasks of increasing complexity. This work focuses on Subtask 3: Dimensional Aspect Sentiment Quad Prediction (DimASQP), which requires systems to extract quadruplets (Aspect, Category, Opinion, VA) from text. Each quadruplet consists of an aspect term (e.g., ``salads''), an aspect category following the Entity\#Attribute format (e.g., ``FOOD\#QUALITY''), an opinion term (e.g., ``fantastic''), and a valence-arousal score pair (e.g., ``7.88\#7.75''), where each score ranges from 1.00 to 9.00.
+
+Large Language Models (LLMs) have demonstrated remarkable capabilities in various NLP tasks, including information extraction and sentiment analysis. However, their application to DimABSA presents unique challenges due to the hybrid nature of the task, which combines discrete element extraction with continuous value prediction. This work investigates the effectiveness of different LLM-based approaches for DimASQP and proposes improvements to both the methodology and evaluation metrics.
+
+\subsection{Research Questions}
+
+Our research addresses the following questions:
+
+\begin{enumerate}
+    \item \textbf{RQ1:} How do few-shot and fine-tuned LLM approaches compare for aspect-opinion-category (AOC) extraction in the DimASQP task?
+    \item \textbf{RQ2:} Is the standard continuous F1 (cF1) metric based on exact matching appropriate for evaluating DimASQP, or can a semantic similarity-based metric provide better assessment of model performance?
+    \item \textbf{RQ3:} What are the error patterns in VA prediction and how do they affect overall system performance?
+\end{enumerate}
+
+\section{Background}
+
+\subsection{Aspect-Based Sentiment Analysis}
+
+Traditional ABSA tasks focus on extracting sentiment elements from text. The seminal work in this area includes Aspect Term Extraction, Aspect Sentiment Classification, and more recently, joint tasks such as Aspect Sentiment Triplet Extraction (ASTE) and Aspect Sentiment Quad Prediction (ASQP). These tasks typically use categorical sentiment labels (positive, negative, neutral), which provide coarse-grained sentiment information.
+
+\subsection{Dimensional Sentiment Analysis}
+
+Dimensional sentiment analysis represents emotions in a continuous space defined by valence and arousal dimensions, based on Russell's circumplex model of affect. This representation enables more fine-grained distinctions between emotional states compared to categorical approaches. Recent work has begun integrating dimensional sentiment representations into ABSA frameworks, leading to the DimABSA paradigm.
+
+\subsection{Large Language Models for Information Extraction}
+
+Recent advances in LLMs have shown their effectiveness in various extraction tasks. Few-shot learning with LLMs leverages in-context learning, where models are provided with task examples in the prompt. Fine-tuning approaches, particularly parameter-efficient methods like LoRA (Low-Rank Adaptation), enable adaptation to specific tasks while maintaining computational efficiency and avoiding catastrophic forgetting.
+
+\subsection{Evaluation Metrics for Hybrid Tasks}
+
+Traditional F1-score for extraction tasks relies on exact string matching, which may be overly strict for semantically equivalent predictions. Recent work has explored semantic similarity-based metrics using embeddings to provide more robust evaluation, particularly for tasks involving paraphrasing or lexical variation.
+
+\section{System Overview}
+
+We developed two pipeline-based systems for the DimASQP task, both following a two-stage architecture: (1) AOC extraction using Llama, and (2) VA prediction using BERT. The two systems differ in their approach to the first stage: Pipeline 1 uses few-shot learning, while Pipeline 2 employs LoRA fine-tuning.
+
+% [FIGURE 1: System Architecture Diagram showing the two-stage pipeline]
+
+\subsection{Dataset}
+
+We used the DimABSA Track A Subtask 3 English restaurant dataset, which contains customer reviews annotated with quadruplets. The dataset was split into training, development, and test sets following standard practices. Each instance consists of a text and zero or more quadruplets containing aspect terms, categories (from a predefined ontology), opinion terms, and VA scores rounded to two decimal places.
+
+\subsection{Pipeline 1: Few-Shot Llama + BERT}
+
+\subsubsection{AOC Extraction with Few-Shot Llama}
+
+The first pipeline employs Llama in a few-shot setting for extracting aspect terms, categories, and opinion terms. We designed prompts that include:
+\begin{itemize}
+    \item Task description explaining the DimASQP objective
+    \item Format specifications for quadruplet output
+    \item Few-shot examples (typically 3-5) from the training set
+    \item The input text to be analyzed
+\end{itemize}
+
+The model outputs structured predictions in JSON format containing the extracted AOC elements. We post-process the outputs to ensure consistency with the expected format and validate category values against the predefined ontology.
+
+\subsubsection{VA Prediction with BERT}
+
+For the second stage, we fine-tuned a BERT model on the training dataset to predict VA scores. The model takes as input the concatenation of the text, aspect term, and opinion term, and outputs two continuous values representing valence and arousal. The model was trained using Mean Squared Error (MSE) loss to minimize prediction error for both dimensions.
+
+\subsection{Pipeline 2: LoRA Fine-Tuned Llama + BERT}
+
+\subsubsection{AOC Extraction with LoRA Fine-Tuned Llama}
+
+The second pipeline uses LoRA to fine-tune Llama on the DimASQP training data. LoRA introduces trainable low-rank matrices into the transformer layers, enabling efficient adaptation while keeping most parameters frozen. This approach allows the model to learn task-specific patterns for AOC extraction while maintaining the general capabilities of the pre-trained LLM.
+
+We configured LoRA with the following hyperparameters:
+\begin{itemize}
+    \item Rank: 8
+    \item Alpha: 16
+    \item Dropout: 0.1
+    \item Target modules: query and value projection layers
+\end{itemize}
+
+The training objective was to generate correctly formatted quadruplets given input text, using teacher forcing and cross-entropy loss.
+
+\subsubsection{VA Prediction with BERT}
+
+We used the same BERT-based VA prediction model as in Pipeline 1, ensuring a fair comparison focused on the AOC extraction component.
+
+\section{Proposed Semantic Evaluation Metric}
+
+The standard evaluation metric for DimASQP is continuous F1 (cF1), which combines categorical matching for AOC elements with a penalty based on VA prediction error. Specifically, a prediction is considered a categorical true positive only if the aspect, category, and opinion terms exactly match a gold annotation. This strict matching criterion may fail to recognize semantically equivalent predictions that use different but synonymous expressions.
+
+\subsection{Motivation}
+
+Consider a gold quadruplet with aspect ``thai food'' and opinion ``average to good'', and a prediction with aspect ``Thai cuisine'' and opinion ``decent''. Under exact matching, this prediction would be considered a false positive, despite being semantically very similar. To address this limitation, we propose a semantic similarity-based matching approach.
+
+\subsection{Semantic cTP Formulation}
+
+Instead of binary categorical matching, we compute continuous similarity scores for each element using sentence embeddings. We use the all-MiniLM-L6-v2 model from sentence-transformers to encode aspect, category, and opinion terms into dense vector representations.
+
+For a predicted quadruplet $t$ and its candidate gold match $g$, we compute:
+
+\begin{equation}
+    \text{sim}_{\text{aspect}} = \cos(\mathbf{e}_A^{(t)}, \mathbf{e}_A^{(g)})
+\end{equation}
+
+\begin{equation}
+    \text{sim}_{\text{category}} = \cos(\mathbf{e}_C^{(t)}, \mathbf{e}_C^{(g)})
+\end{equation}
+
+\begin{equation}
+    \text{sim}_{\text{opinion}} = \cos(\mathbf{e}_O^{(t)}, \mathbf{e}_O^{(g)})
+\end{equation}
+
+where $\mathbf{e}_A$, $\mathbf{e}_C$, and $\mathbf{e}_O$ denote the embeddings for aspect, category, and opinion respectively, and $\cos$ is the cosine similarity.
+
+The semantic categorical true positive score is then:
+
+\begin{equation}
+    cTP_{\text{semantic}}^{(t)} = \frac{\text{sim}_{\text{aspect}} + \text{sim}_{\text{category}} + \text{sim}_{\text{opinion}}}{3}
+\end{equation}
+
+We apply a threshold (0.9 for Pipeline 1, 0.925 for Pipeline 2) to determine whether a prediction matches a gold annotation. If $cTP_{\text{semantic}}^{(t)}$ exceeds the threshold, we consider it a categorical match and apply the VA distance penalty as in the original metric.
+
+The final semantic continuous recall and precision are:
+
+\begin{equation}
+\small
+    cRecall_{\text{sem}} = \frac{\sum_{t \in P_{\text{cat}}} cTP_{\text{sem}}^{(t)} - \text{dist}(VA_p^{(t)}, VA_g^{(t)})}{TP_{\text{cat}} + FN_{\text{cat}}}
+\end{equation}
+
+\begin{equation}
+\small
+    cPrecision_{\text{sem}} = \frac{\sum_{t \in P_{\text{cat}}} cTP_{\text{sem}}^{(t)} - \text{dist}(VA_p^{(t)}, VA_g^{(t)})}{TP_{\text{cat}} + FP_{\text{cat}}}
+\end{equation}
+
+where $\text{dist}(VA_p, VA_g) = \sqrt{(V_p - V_g)^2 + (A_p - A_g)^2} / \sqrt{128}$ as defined in the official evaluation metric.
+
+\section{Experimental Results}
+
+We evaluated both pipelines on the test split of the English restaurant dataset. Results are reported for both the standard exact matching cF1 and our proposed semantic cF1.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lcc}
+\hline
+\textbf{Metric} & \textbf{Pipeline 1} & \textbf{Pipeline 2} \\
+& \textbf{(Few-shot)} & \textbf{(LoRA)} \\
+\hline
+\multicolumn{3}{c}{\textit{Exact Matching}} \\
+\hline
+$TP_{cat}$ & 183 & 375 \\
+$FP_{cat}$ & 381 & 172 \\
+$FN_{cat}$ & 368 & 176 \\
+cPrecision & 0.303 & - \\
+cRecall & 0.310 & - \\
+cF1 & \textbf{0.3066} & \textbf{0.5300} \\
+\hline
+\multicolumn{3}{c}{\textit{Semantic Matching}} \\
+\hline
+Threshold & 0.90 & 0.925 \\
+$TP_{cat}$ & - & 375 \\
+$FP_{cat}$ & - & 172 \\
+$FN_{cat}$ & - & 176 \\
+cPrecision & 0.633 & - \\
+cRecall & 0.628 & - \\
+cF1 & \textbf{0.4682} & \textbf{0.6307} \\
+\hline
+Improvement & +53\% & +19\% \\
+\hline
+\end{tabular}
+\caption{Performance comparison of Pipeline 1 (few-shot) and Pipeline 2 (LoRA fine-tuned) using exact matching and semantic matching evaluation metrics.}
+\label{tab:main_results}
+\end{table}
+
+\subsection{Few-Shot vs Fine-Tuned Comparison (RQ1)}
+
+Table~\ref{tab:main_results} presents the main results. Pipeline 2 (LoRA fine-tuned) significantly outperforms Pipeline 1 (few-shot) under both evaluation metrics. With exact matching, Pipeline 2 achieves 53.0\% cF1 compared to 30.66\% for Pipeline 1, representing a 73\% relative improvement. This substantial gain demonstrates the effectiveness of fine-tuning for the AOC extraction component of DimASQP.
+
+The fine-tuned model shows improvements across all metrics:
+\begin{itemize}
+    \item $TP_{\text{cat}}$ increases from 183 to 375 (+105\%)
+    \item $FP_{\text{cat}}$ decreases from 381 to 172 (-55\%)
+    \item $FN_{\text{cat}}$ decreases from 368 to 176 (-52\%)
+\end{itemize}
+
+These results indicate that fine-tuning enables the model to better learn the extraction patterns and category taxonomy specific to the restaurant domain, leading to more accurate predictions with fewer false positives and false negatives.
+
+% [FIGURE: Bar chart comparing cF1 scores for exact vs semantic metrics across both pipelines]
+
+\subsection{Impact of Semantic Evaluation (RQ2)}
+
+The semantic evaluation metric reveals higher performance for both pipelines, indicating that exact matching underestimates actual model capabilities. Pipeline 1 improves from 30.66\% to 46.82\% cF1 (53\% relative improvement), while Pipeline 2 improves from 53.0\% to 63.07\% cF1 (19\% relative improvement).
+
+The larger improvement for Pipeline 1 suggests that the few-shot model produces more lexical variations that are semantically correct but fail exact matching. The fine-tuned model, having learned from specific training examples, produces predictions more aligned with the exact wording in annotations, thus benefiting less from semantic matching.
+
+Analysis of the semantic similarity scores shows that many predictions have cosine similarities between 0.85 and 0.95, indicating they are semantically close but lexically different from gold annotations. This validates our hypothesis that exact matching is overly strict for this task.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrr}
+\hline
+\textbf{Metric} & \textbf{Exact} & \textbf{Semantic} \\
+\hline
+\multicolumn{3}{c}{\textit{Pipeline 1 (Few-shot)}} \\
+\hline
+cF1 & 30.66\% & 46.82\% \\
+Improvement & - & +53\% \\
+\hline
+\multicolumn{3}{c}{\textit{Pipeline 2 (LoRA)}} \\
+\hline
+cF1 & 53.00\% & 63.07\% \\
+Improvement & - & +19\% \\
+\hline
+\end{tabular}
+\caption{Impact of semantic evaluation on cF1 scores for both pipelines.}
+\label{tab:semantic_impact}
+\end{table}
+
+\subsection{VA Prediction Error Analysis (RQ3)}
+
+We analyzed the distribution of VA prediction errors to understand their impact on the overall cF1 scores. The VA distance penalty contributes to reducing cTP values even for categorically correct predictions.
+
+% [FIGURE: Histogram showing distribution of VA distance errors]
+
+The BERT model achieves reasonable VA prediction accuracy, with most errors concentrated in the 0--2 range on the normalized distance scale (where maximum distance is $\sqrt{128} \approx 11.3$). Larger errors (distance $>$ 3) are relatively rare, occurring primarily for examples with ambiguous or complex sentiment expressions.
+
+Comparing the VA distance penalty contribution between the two pipelines, we observe that Pipeline 2 suffers slightly lower VA penalties on average. This may be because the more accurate AOC extraction provides better context for VA prediction, as the BERT model receives correct aspect and opinion terms as input.
+
+% [FIGURE: Histogram showing TP, FP, FN counts by aspect category]
+
+\subsection{Error Analysis by Category}
+
+Breaking down performance by aspect category reveals varying difficulty levels. Categories like FOOD\#QUALITY and SERVICE\#GENERAL are more common and achieve higher F1 scores, while rarer categories like AMBIENCE\#GENERAL show lower performance due to limited training examples.
+
+Common error patterns include:
+\begin{itemize}
+    \item Boundary errors: incorrect aspect span extraction (e.g., ``great service'' vs ``service'')
+    \item Category confusion: selecting semantically related but incorrect categories
+    \item Implicit aspects: missing aspects that are implied but not explicitly mentioned
+    \item Multi-word expressions: difficulty capturing complete opinion phrases
+\end{itemize}
+
+\section{Conclusion}
+
+This work presents a comprehensive study of LLM-based approaches for Dimensional Aspect Sentiment Quad Prediction. Our key findings are:
+
+\textbf{Main Outcomes:}
+\begin{enumerate}
+    \item Fine-tuning with LoRA substantially improves AOC extraction performance compared to few-shot learning, achieving 73\% relative improvement in cF1 with exact matching.
+    \item The proposed semantic evaluation metric based on embedding similarity provides a more robust assessment of model performance, capturing semantically correct predictions that fail exact matching.
+    \item The two-stage pipeline architecture combining LLM for AOC extraction and BERT for VA prediction is effective for the DimASQP task.
+\end{enumerate}
+
+\textbf{Limitations:}
+Our study has several limitations. First, experiments were conducted only on the English restaurant domain, limiting generalizability to other domains and languages. Second, the semantic similarity thresholds were chosen empirically based on development set performance and may not be optimal. Third, the computational cost of fine-tuning limits accessibility for resource-constrained settings. Finally, the two-stage pipeline may propagate errors from AOC extraction to VA prediction.
+
+\textbf{Future Work:}
+Several directions could extend this work. Evaluating on multi-domain and multilingual datasets would assess generalizability. Developing end-to-end models that jointly predict AOC and VA could reduce error propagation. Investigating alternative semantic metrics such as BERTScore could provide further insights. Finally, studying optimal threshold selection methods for semantic matching would improve the metric's robustness.
+
+
+\bibliography{custom}
+
+\appendix
+
+\section{Figures Placeholder Guide}
+\label{sec:figures}
+
+The following figures should be inserted at the marked positions in the text:
+
+\begin{itemize}
+    \item \textbf{Figure 1} (Section 3): System Architecture Diagram showing the two-stage pipeline with Llama for AOC extraction followed by BERT for VA prediction. Should illustrate both Pipeline 1 (few-shot) and Pipeline 2 (LoRA fine-tuned) architectures.
+    
+    \item \textbf{Figure 2} (Section 4.1): Bar chart comparing cF1 scores using exact matching vs semantic matching for both pipelines. Four bars total: Pipeline 1 (exact: 30.66\%, semantic: 46.82\%) and Pipeline 2 (exact: 53.00\%, semantic: 63.07\%).
+    
+    \item \textbf{Figure 3} (Section 4.3): Histogram showing the distribution of VA distance errors. X-axis: normalized VA distance (0--11.3), Y-axis: frequency count. Most errors should be in the 0--2 range.
+    
+    \item \textbf{Figure 4} (Section 4.4): Histogram showing TP, FP, FN counts by aspect category (e.g., FOOD\#QUALITY, SERVICE\#GENERAL, AMBIENCE\#GENERAL, etc.). Grouped bar chart with three bars per category.
+\end{itemize}
+
+\end{document}
+

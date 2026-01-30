@@ -1,7 +1,7 @@
 Abbiamo creato due pipeline per risolvere il problema dell'ABSA.
 Il primo è llama few shot senza fine tuning per AOC + bert model per VA,
 il secondo è llama fine tunizato con lora per AOC + bert model per VA.
-Abbiamo visto come con un semplice fine tuning le performance sulla metrica cTP definita nel readme.md
+Abbiamo visto come con un semplice fine tuning le performance sulla metrica cf1 definita nel readme.md
 porti a performance maggiori (53% vs 30.66%).
 Abbiamo introdotto anche un nuovo modo per valutare cf1 non basato su exact matching ma su
 significato semantico usando cossim tra ground truth di aspect, opinion e category con quelli predetti.
@@ -29,3 +29,5 @@ In entrambi casi i cf1 migliorano (46.82%, 63.07%). (dettagli di questo approcci
    
    Dove $\text{dist}(VA_p, VA_g) = \frac{\sqrt{(V_p - V_g)^2 + (A_p - A_g)^2}}{\sqrt{128}}$ come nella metrica originale.)
 
+Ho grafici che fanno confronto tra metriche cf1 definite come nel readme.md oppure con la mia metrica cf1 sematica based.
+Ho anche grafici sulla distribuzione errori va. ho grafici istogrammi anche per TP FP e FN
