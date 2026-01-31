@@ -88,7 +88,7 @@
 \pagestyle{plain}
 \maketitle
 \begin{abstract}
-Dimensional Aspect-Based Sentiment Analysis (DimABSA) extends traditional ABSA by replacing categorical sentiment labels with continuous valence-arousal (VA) scores, enabling more nuanced emotional representations. In this work, we address the DimASQP task, which requires extracting quadruplets consisting of aspect terms, categories, opinion terms, and VA scores from restaurant reviews. We compare two approaches: a few-shot Llama model and a LoRA fine-tuned Llama model for aspect-opinion-category extraction, both combined with a BERT model for VA prediction. Our experiments show that fine-tuning improves performance significantly, achieving 53\% cF1 with exact matching compared to 30.66\% for few-shot learning. Additionally, we propose a novel semantic evaluation metric based on embedding similarity that better captures partial matches, further improving cF1 to 63.07\% for the fine-tuned approach. Our results demonstrate the effectiveness of fine-tuning and the importance of semantic-aware evaluation metrics for DimABSA tasks.
+Dimensional Aspect-Based Sentiment Analysis (DimABSA) extends traditional ABSA by replacing categorical sentiment labels with continuous valence-arousal (VA) scores, enabling more nuanced emotional representations. In this work, we address the DimASQP task, which requires extracting quadruplets consisting of aspect terms, categories, opinion terms, and VA scores from restaurant reviews. We compare two approaches: a few-shot Llama model and a LoRA fine-tuned Llama model for aspect-opinion-category extraction, both combined with a BERT model for VA prediction. Our experiments show that fine-tuning improves performance significantly, achieving 53.68\% cF1 with exact matching compared to 30.51\% for few-shot learning (75.9\% improvement). Additionally, we propose a novel semantic evaluation metric based on embedding similarity and Hungarian matching that ensures 1-to-1 assignment while better capturing semantic equivalences, further improving cF1 to 63.37\% for the fine-tuned approach versus 46.94\% for few-shot (35.0\% improvement). Our results demonstrate the effectiveness of fine-tuning and the importance of semantic-aware evaluation metrics for DimABSA tasks.
 \end{abstract}
 
 \section{Introduction}
@@ -144,7 +144,7 @@ We used the DimABSA Track A Subtask 3 English restaurant dataset, which contains
 The first pipeline employs Llama in a few-shot setting for extracting aspect terms, categories, and opinion terms. We designed prompts that include:
 \begin{itemize}
     \item Task description explaining the DimASQP objective
-    \item Format specifications for quadruplet output
+    \item Format specifications for triplet output
     \item Few-shot examples from the training set
     \item The input text to be analyzed
 \end{itemize}
@@ -153,7 +153,7 @@ The model outputs structured predictions in JSON format containing the extracted
 
 \subsubsection{VA Prediction with BERT}
 
-For the second stage, we fine-tuned a BERT model on the training dataset to predict VA scores. The model takes as input the concatenation of the text, aspect term, and opinion term, and outputs two continuous values representing valence and arousal. The model was trained using Mean Squared Error (MSE) loss to minimize prediction error for both dimensions.
+For the second stage, we fine-tuned a BERT model on the training dataset to predict VA scores. The model takes as input the concatenation of the text, aspect term, opinion term, and category term, and outputs two continuous values representing valence and arousal. The model was trained using Mean Squared Error (MSE) loss to minimize prediction error for both dimensions.
 
 \subsection{Pipeline 2: LoRA Fine-Tuned Llama + BERT}
 
@@ -163,17 +163,17 @@ The second pipeline uses LoRA to fine-tune Llama on the DimASQP training data. L
 
 We configured LoRA with the following hyperparameters:
 \begin{itemize}
-    \item Rank: 8
-    \item Alpha: 16
+    \item Rank: 16
+    \item Alpha: 32
     \item Dropout: 0.1
-    \item Target modules: query and value projection layers
+    \item Target modules: query key value projection layers
 \end{itemize}
 
-The training objective was to generate correctly formatted quadruplets given input text, using teacher forcing and cross-entropy loss.
+The training objective was to generate correctly formatted triplets given input text, using teacher forcing and cross-entropy loss.
 
 \subsubsection{VA Prediction with BERT}
 
-We used the same BERT-based VA prediction model as in Pipeline 1, ensuring a fair comparison focused on the AOC extraction component.
+We used the same BERT-based VA prediction training as in Pipeline 1, ensuring a fair comparison focused on the AOC extraction component.
 
 \section{Proposed Semantic Evaluation Metric}
 
@@ -181,13 +181,13 @@ The standard evaluation metric for DimASQP is continuous F1 (cF1), which combine
 
 \subsection{Motivation}
 
-Consider a gold quadruplet with aspect ``thai food'' and opinion ``average to good'', and a prediction with aspect ``Thai cuisine'' and opinion ``decent''. Under exact matching, this prediction would be considered a false positive, despite being semantically very similar. To address this limitation, we propose a semantic similarity-based matching approach.
+Consider a gold quadruplet with aspect ``tiger roll'' and opinion ``good'', and a prediction with aspect ``the tiger roll'' and opinion ``good''. Under exact matching, this prediction would be considered a false positive, despite being semantically very similar. To address this limitation, we propose a semantic similarity-based matching approach.
 
 \subsection{Semantic cTP Formulation}
 
 Instead of binary categorical matching, we compute continuous similarity scores for each element using sentence embeddings. We use the all-MiniLM-L6-v2 model from sentence-transformers to encode aspect, category, and opinion terms into dense vector representations.
 
-For a predicted quadruplet $t$ and its candidate gold match $g$, we compute:
+For a predicted triplet $t$ and its candidate gold match $g$, we compute:
 
 \begin{equation}
     \text{sim}_{\text{aspect}} = \cos(\mathbf{e}_A^{(t)}, \mathbf{e}_A^{(g)})
@@ -209,7 +209,16 @@ The semantic categorical true positive score is then:
     cTP_{\text{semantic}}^{(t)} = \frac{\text{sim}_{\text{aspect}} + \text{sim}_{\text{category}} + \text{sim}_{\text{opinion}}}{3}
 \end{equation}
 
-We apply a threshold (0.9 for Pipeline 1, 0.925 for Pipeline 2) to determine whether a prediction matches a gold annotation. If $cTP_{\text{semantic}}^{(t)}$ exceeds the threshold, we consider it a categorical match and apply the VA distance penalty as in the original metric.
+To ensure 1-to-1 matching between predictions and gold annotations, we employ the Hungarian algorithm. For each review, we construct a cost matrix where entry $(i,j)$ represents the negative semantic similarity score $-cTP_{\text{semantic}}^{(i,j)}$ between gold triplet $i$ and predicted triplet $j$. We apply a semantic threshold (0.9 for Pipeline 1, 0.925 for Pipeline 2) to determine valid pairs: if $cTP_{\text{semantic}}^{(t)}$ is below this threshold, the pair is considered invalid and assigned zero cost (equivalent to a dummy match).
+
+The Hungarian algorithm finds the optimal 1-to-1 assignment that maximizes total semantic similarity (minimizes negative cost). After assignment, we identify:
+\begin{itemize}
+    \item \textbf{True Positives (TP)}: Valid matched pairs (above semantic threshold)
+    \item \textbf{False Positives (FP)}: Unmatched predictions
+    \item \textbf{False Negatives (FN)}: Unmatched gold annotations
+\end{itemize}
+
+This approach guarantees that each gold triplet matches at most one prediction and vice versa, while properly handling cases where no valid match exists. Importantly, the VA distance penalty is applied only after the matching is established, affecting the final cF1 computation but not the matching itself.
 
 The final semantic continuous recall and precision are:
 
@@ -237,26 +246,25 @@ We evaluated both pipelines on the test split of the English restaurant dataset.
 \textbf{Metric} & \textbf{Pipeline 1} & \textbf{Pipeline 2} \\
 & \textbf{(Few-shot)} & \textbf{(LoRA)} \\
 \hline
-\multicolumn{3}{c}{\textit{Exact Matching}} \\
+\multicolumn{3}{c}{\textit{Exact Matching (VA-based)}} \\
 \hline
-$TP_{cat}$ & 183 & 375 \\
-$FP_{cat}$ & 381 & 172 \\
-$FN_{cat}$ & 368 & 176 \\
-cPrecision & 0.303 & - \\
-cRecall & 0.310 & - \\
-cF1 & \textbf{0.3066} & \textbf{0.5300} \\
+$TP_{cat}$ & 183 & 314 \\
+$FP_{cat}$ & 380 & 227 \\
+$FN_{cat}$ & 368 & 237 \\
+cPrecision & 0.3018 & 0.5417 \\
+cRecall & 0.3084 & 0.5319 \\
+cF1 & \textbf{0.3051} & \textbf{0.5368} \\
 \hline
 \multicolumn{3}{c}{\textit{Semantic Matching}} \\
 \hline
-Threshold & 0.90 & 0.925 \\
-$TP_{cat}$ & - & 375 \\
-$FP_{cat}$ & - & 172 \\
-$FN_{cat}$ & - & 176 \\
-cPrecision & 0.633 & - \\
-cRecall & 0.628 & - \\
-cF1 & \textbf{0.4682} & \textbf{0.6307} \\
+$TP_{cat}$ & 288 & 375 \\
+$FP_{cat}$ & 275 & 166 \\
+$FN_{cat}$ & 263 & 176 \\
+cPrecision & 0.4644 & 0.6395 \\
+cRecall & 0.4745 & 0.6279 \\
+cF1 & \textbf{0.4694} & \textbf{0.6337} \\
 \hline
-Improvement & +53\% & +19\% \\
+Improvement & +53.87\% & +18.06\% \\
 \hline
 \end{tabular}
 \caption{Performance comparison of Pipeline 1 (few-shot) and Pipeline 2 (LoRA fine-tuned) using exact matching and semantic matching evaluation metrics.}
@@ -265,13 +273,20 @@ Improvement & +53\% & +19\% \\
 
 \subsection{Few-Shot vs Fine-Tuned Comparison (RQ1)}
 
-Table~\ref{tab:main_results} presents the main results. Pipeline 2 (LoRA fine-tuned) significantly outperforms Pipeline 1 (few-shot) under both evaluation metrics. With exact matching, Pipeline 2 achieves 53.0\% cF1 compared to 30.66\% for Pipeline 1, representing a 73\% relative improvement. This substantial gain demonstrates the effectiveness of fine-tuning for the AOC extraction component of DimASQP.
+Table~\ref{tab:main_results} presents the main results. Pipeline 2 (LoRA fine-tuned) significantly outperforms Pipeline 1 (few-shot) under both evaluation metrics. With exact matching, Pipeline 2 achieves 53.68\% cF1 compared to 30.51\% for Pipeline 1, representing a 75.9\% relative improvement. This substantial gain demonstrates the effectiveness of fine-tuning for the AOC extraction component of DimASQP.
 
 The fine-tuned model shows improvements across all metrics:
 \begin{itemize}
-    \item $TP_{\text{cat}}$ increases from 183 to 375 (+105\%)
-    \item $FP_{\text{cat}}$ decreases from 381 to 172 (-55\%)
-    \item $FN_{\text{cat}}$ decreases from 368 to 176 (-52\%)
+    \item $TP_{\text{cat}}$ increases from 183 to 314 (+71.6\%)
+    \item $FP_{\text{cat}}$ decreases from 380 to 227 (-40.3\%)
+    \item $FN_{\text{cat}}$ decreases from 368 to 237 (-35.6\%)
+\end{itemize}
+
+With semantic matching, the improvements are still significantly important:
+\begin{itemize}
+    \item $TP_{\text{cat}}$ increases from 288 to 375 (+30.2\%)
+    \item $FP_{\text{cat}}$ decreases from 275 to 166 (-39.6\%)
+    \item $FN_{\text{cat}}$ decreases from 263 to 176 (-33.1\%)
 \end{itemize}
 
 These results indicate that fine-tuning enables the model to better learn the extraction patterns and category taxonomy specific to the restaurant domain, leading to more accurate predictions with fewer false positives and false negatives.
@@ -280,7 +295,7 @@ These results indicate that fine-tuning enables the model to better learn the ex
 
 \subsection{Impact of Semantic Evaluation (RQ2)}
 
-The semantic evaluation metric reveals higher performance for both pipelines, indicating that exact matching underestimates actual model capabilities. Pipeline 1 improves from 30.66\% to 46.82\% cF1 (53\% relative improvement), while Pipeline 2 improves from 53.0\% to 63.07\% cF1 (19\% relative improvement).
+The semantic evaluation metric reveals higher performance for both pipelines, indicating that exact matching underestimates actual model capabilities. Pipeline 1 improves from 30.51\% to 46.94\% cF1 (53.87\% relative improvement), while Pipeline 2 improves from 53.68\% to 63.37\% cF1 (18.06\% relative improvement).
 
 The larger improvement for Pipeline 1 suggests that the few-shot model produces more lexical variations that are semantically correct but fail exact matching. The fine-tuned model, having learned from specific training examples, produces predictions more aligned with the exact wording in annotations, thus benefiting less from semantic matching.
 
@@ -295,13 +310,13 @@ Analysis of the semantic similarity scores shows that many predictions have cosi
 \hline
 \multicolumn{3}{c}{\textit{Pipeline 1 (Few-shot)}} \\
 \hline
-cF1 & 30.66\% & 46.82\% \\
-Improvement & - & +53\% \\
+cF1 & 30.51\% & 46.94\% \\
+Improvement & - & +53.87\% \\
 \hline
 \multicolumn{3}{c}{\textit{Pipeline 2 (LoRA)}} \\
 \hline
-cF1 & 53.00\% & 63.07\% \\
-Improvement & - & +19\% \\
+cF1 & 53.68\% & 63.37\% \\
+Improvement & - & +18.06\% \\
 \hline
 \end{tabular}
 \caption{Impact of semantic evaluation on cF1 scores for both pipelines.}
@@ -338,16 +353,16 @@ This work presents a comprehensive study of LLM-based approaches for Dimensional
 
 \textbf{Main Outcomes:}
 \begin{enumerate}
-    \item Fine-tuning with LoRA substantially improves AOC extraction performance compared to few-shot learning, achieving 73\% relative improvement in cF1 with exact matching.
-    \item The proposed semantic evaluation metric based on embedding similarity provides a more robust assessment of model performance, capturing semantically correct predictions that fail exact matching.
+    \item Fine-tuning with LoRA substantially improves AOC extraction performance compared to few-shot learning, achieving 75.9\% relative improvement in cF1 with exact matching (30.51\% $\rightarrow$ 53.68\%) and 35.0\% improvement with semantic matching (46.94\% $\rightarrow$ 63.37\%).
+    \item The proposed semantic evaluation metric based on embedding similarity and Hungarian matching provides a more robust assessment of model performance, capturing semantically correct predictions that fail exact matching while ensuring 1-to-1 assignment. Both pipelines benefit significantly, with few-shot showing a 53.87\% improvement and LoRA showing a 18.06\% improvement.
     \item The two-stage pipeline architecture combining LLM for AOC extraction and BERT for VA prediction is effective for the DimASQP task.
 \end{enumerate}
 
 \textbf{Limitations:}
-Our study has several limitations. First, experiments were conducted only on the English restaurant domain, limiting generalizability to other domains and languages. Second, the semantic similarity thresholds were chosen empirically based on development set performance and may not be optimal. Third, the computational cost of fine-tuning limits accessibility for resource-constrained settings. Finally, the two-stage pipeline may propagate errors from AOC extraction to VA prediction.
+Our study has several limitations. First, experiments were conducted only on the English restaurant domain, limiting generalizability to other domains and languages. Second, the semantic similarity thresholds were chosen empirically based on development set performance, trying to be as close as possible to exact matching and may not be optimal. Third, the computational cost of fine-tuning limits accessibility for resource-constrained settings. Finally, the two-stage pipeline may propagate errors from AOC extraction to VA prediction.
 
 \textbf{Future Work:}
-Several directions could extend this work. Evaluating on multi-domain and multilingual datasets would assess generalizability. Developing end-to-end models that jointly predict AOC and VA could reduce error propagation. Investigating alternative semantic metrics such as BERTScore could provide further insights. Finally, studying optimal threshold selection methods for semantic matching would improve the metric's robustness.
+Several directions could extend this work. Evaluating on multi-domain and multilingual datasets would assess generalizability. Developing end-to-end models that jointly predict AOC and VA could reduce error propagation. Finally, studying optimal threshold selection methods for semantic matching would improve the metric's robustness.
 
 
 \bibliography{custom}
@@ -362,7 +377,7 @@ The following figures should be inserted at the marked positions in the text:
 \begin{itemize}
     \item \textbf{Figure 1} (Section 3): System Architecture Diagram showing the two-stage pipeline with Llama for AOC extraction followed by BERT for VA prediction. Should illustrate both Pipeline 1 (few-shot) and Pipeline 2 (LoRA fine-tuned) architectures.
     
-    \item \textbf{Figure 2} (Section 4.1): Bar chart comparing cF1 scores using exact matching vs semantic matching for both pipelines. Four bars total: Pipeline 1 (exact: 30.66\%, semantic: 46.82\%) and Pipeline 2 (exact: 53.00\%, semantic: 63.07\%).
+    \item \textbf{Figure 2} (Section 4.1): Bar chart comparing cF1 scores using exact matching vs semantic matching for both pipelines. Four bars total: Pipeline 1 (exact: 30.51\%, semantic: 46.94\%) and Pipeline 2 (exact: 53.68\%, semantic: 63.37\%).
     
     \item \textbf{Figure 3} (Section 4.3): Histogram showing the distribution of VA distance errors. X-axis: normalized VA distance (0--11.3), Y-axis: frequency count. Most errors should be in the 0--2 range.
     

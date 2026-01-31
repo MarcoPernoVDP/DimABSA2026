@@ -4,15 +4,15 @@
   "pred_file": "pred_eng_restaurant_test_split_subtask3.jsonl",
   "metrics": {
     "TP_cat": 183,
-    "cTP_total": 170.9163,
-    "FP_cat": 381,
+    "cTP_total": 169.9213,
+    "FP_cat": 380,
     "FN_cat": 368,
-    "cPrecision": 0.303,
-    "cRecall": 0.3102,
-    "cF1": 0.3066,
-    "standard_precision": 0.3245,
+    "cPrecision": 0.3018,
+    "cRecall": 0.3084,
+    "cF1": 0.3051,
+    "standard_precision": 0.325,
     "standard_recall": 0.3321,
-    "standard_f1": 0.3283
+    "standard_f1": 0.3285
   },
   "warnings": {
     "invalid_va_predictions": 0,
