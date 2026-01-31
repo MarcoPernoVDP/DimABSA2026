@@ -5,34 +5,42 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Research Questions}{1}{subsection.1.1}\protected@file@percent }
+\citation{russell1980circumplex}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Background}{2}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Aspect-Based Sentiment Analysis}{2}{subsection.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Dimensional Sentiment Analysis}{2}{subsection.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Large Language Models for Information Extraction}{2}{subsection.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Evaluation Metrics for Hybrid Tasks}{2}{subsection.2.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}System Overview}{2}{section.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces System architecture for both pipelines. Top: Pipeline 1 using few-shot Llama for AOC extraction. Bottom: Pipeline 2 using LoRA fine-tuned Llama for AOC extraction. Both pipelines share the same BERT-based VA prediction stage.}}{2}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:pipelines}{{1}{2}{System architecture for both pipelines. Top: Pipeline 1 using few-shot Llama for AOC extraction. Bottom: Pipeline 2 using LoRA fine-tuned Llama for AOC extraction. Both pipelines share the same BERT-based VA prediction stage}{figure.caption.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Dataset}{2}{subsection.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Pipeline 1: Few-Shot Llama + BERT}{2}{subsection.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}AOC Extraction with Few-Shot Llama}{2}{subsubsection.3.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}VA Prediction with BERT}{2}{subsubsection.3.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Pipeline 2: LoRA Fine-Tuned Llama + BERT}{2}{subsection.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}AOC Extraction with LoRA Fine-Tuned Llama}{2}{subsubsection.3.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Pipeline 2: LoRA Fine-Tuned Llama + BERT}{3}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}AOC Extraction with LoRA Fine-Tuned Llama}{3}{subsubsection.3.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}VA Prediction with BERT}{3}{subsubsection.3.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4}Proposed Semantic Evaluation Metric}{3}{section.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Motivation}{3}{subsection.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Semantic cTP Formulation}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Hungarian Matching heatmap example showing semantic similarity scores between gold triplets (rows) and predicted triplets (columns). Red boxes indicate optimal 1-to-1 matches selected by the Hungarian algorithm with similarity threshold > 0.925. Darker blue indicates higher semantic similarity.}}{4}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:hungarian_heatmap}{{2}{4}{Hungarian Matching heatmap example showing semantic similarity scores between gold triplets (rows) and predicted triplets (columns). Red boxes indicate optimal 1-to-1 matches selected by the Hungarian algorithm with similarity threshold > 0.925. Darker blue indicates higher semantic similarity}{figure.caption.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Results}{4}{section.5}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Performance comparison of Pipeline 1 (few-shot) and Pipeline 2 (LoRA fine-tuned) using exact matching and semantic matching evaluation metrics.}}{4}{table.caption.1}\protected@file@percent }
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{tab:main_results}{{1}{4}{Performance comparison of Pipeline 1 (few-shot) and Pipeline 2 (LoRA fine-tuned) using exact matching and semantic matching evaluation metrics}{table.caption.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Performance comparison of Pipeline 1 (few-shot) and Pipeline 2 (LoRA fine-tuned) using exact matching and semantic matching evaluation metrics.}}{4}{table.caption.3}\protected@file@percent }
+\newlabel{tab:main_results}{{1}{4}{Performance comparison of Pipeline 1 (few-shot) and Pipeline 2 (LoRA fine-tuned) using exact matching and semantic matching evaluation metrics}{table.caption.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Few-Shot vs Fine-Tuned Comparison (RQ1)}{4}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Impact of Semantic Evaluation (RQ2)}{4}{subsection.5.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Impact of semantic evaluation on cF1 scores for both pipelines.}}{4}{table.caption.2}\protected@file@percent }
-\newlabel{tab:semantic_impact}{{2}{4}{Impact of semantic evaluation on cF1 scores for both pipelines}{table.caption.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}VA Prediction Error Analysis (RQ3)}{4}{subsection.5.3}\protected@file@percent }
-\bibdata{custom}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Impact of Semantic Evaluation (RQ2)}{5}{subsection.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Impact of semantic evaluation on cF1 scores for both pipelines.}}{5}{table.caption.6}\protected@file@percent }
+\newlabel{tab:semantic_impact}{{2}{5}{Impact of semantic evaluation on cF1 scores for both pipelines}{table.caption.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}VA Prediction Error Analysis (RQ3)}{5}{subsection.5.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Error Analysis by Category}{5}{subsection.5.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{5}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {A}Figures Placeholder Guide}{5}{appendix.A}\protected@file@percent }
-\newlabel{sec:figures}{{A}{5}{Figures Placeholder Guide}{appendix.A}{}}
+\bibdata{custom}
+\bibcite{russell1980circumplex}{{1}{1980}{{Russell}}{{}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Performance comparison between Pipeline 1 (Few-shot, left) and Pipeline 2 (LoRA, right). Each panel shows: (top) Precision, Recall, and F1 scores comparing VA-based and semantic-based metrics; (bottom) Distribution of cTP scores for both evaluation methods. The fine-tuned model achieves higher cTP scores overall, while semantic matching reveals additional valid predictions for both pipelines.}}{6}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:comparison_pipelines}{{3}{6}{Performance comparison between Pipeline 1 (Few-shot, left) and Pipeline 2 (LoRA, right). Each panel shows: (top) Precision, Recall, and F1 scores comparing VA-based and semantic-based metrics; (bottom) Distribution of cTP scores for both evaluation methods. The fine-tuned model achieves higher cTP scores overall, while semantic matching reveals additional valid predictions for both pipelines}{figure.caption.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces VA prediction error analysis. Left: Pipeline 1 (Few-shot) VA distance distribution. Right: Pipeline 2 (LoRA) VA distance distribution. Both show the distribution of normalized VA distances, with most errors concentrated in the lower range.}}{6}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:va_analysis}{{4}{6}{VA prediction error analysis. Left: Pipeline 1 (Few-shot) VA distance distribution. Right: Pipeline 2 (LoRA) VA distance distribution. Both show the distribution of normalized VA distances, with most errors concentrated in the lower range}{figure.caption.5}{}}
 \gdef \@abspage@last{6}

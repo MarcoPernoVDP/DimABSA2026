@@ -41,48 +41,18 @@
 
 \title{Enhancing Dimensional Aspect-Based Sentiment Analysis: A Comparative Study of Few-Shot and Fine-Tuned LLM Approaches with Semantic Evaluation Metrics}
 
-\author{Marco [Surname] \\
-  Politecnico di [City] \\
-  Department of Computer Science \\
-  \texttt{email@polito.it} \\}
-
-%\author{
-%  \textbf{First Author\textsuperscript{1}},
-%  \textbf{Second Author\textsuperscript{1,2}},
-%  \textbf{Third T. Author\textsuperscript{1}},
-%  \textbf{Fourth Author\textsuperscript{1}},
-%\\
-%  \textbf{Fifth Author\textsuperscript{1,2}},
-%  \textbf{Sixth Author\textsuperscript{1}},
-%  \textbf{Seventh Author\textsuperscript{1}},
-%  \textbf{Eighth Author \textsuperscript{1,2,3,4}},
-%\\
-%  \textbf{Ninth Author\textsuperscript{1}},
-%  \textbf{Tenth Author\textsuperscript{1}},
-%  \textbf{Eleventh E. Author\textsuperscript{1,2,3,4,5}},
-%  \textbf{Twelfth Author\textsuperscript{1}},
-%\\
-%  \textbf{Thirteenth Author\textsuperscript{3}},
-%  \textbf{Fourteenth F. Author\textsuperscript{2,4}},
-%  \textbf{Fifteenth Author\textsuperscript{1}},
-%  \textbf{Sixteenth Author\textsuperscript{1}},
-%\\
-%  \textbf{Seventeenth S. Author\textsuperscript{4,5}},
-%  \textbf{Eighteenth Author\textsuperscript{3,4}},
-%  \textbf{Nineteenth N. Author\textsuperscript{2,5}},
-%  \textbf{Twentieth Author\textsuperscript{1}}
-%\\
-%\\
-%  \textsuperscript{1}Affiliation 1,
-%  \textsuperscript{2}Affiliation 2,
-%  \textsuperscript{3}Affiliation 3,
-%  \textsuperscript{4}Affiliation 4,
-%  \textsuperscript{5}Affiliation 5
-%\\
-%  \small{
-%    \textbf{Correspondence:} \href{mailto:email@domain}{email@domain}
-%  }
-%}
+\author{
+  \textbf{Balbo Enrico},
+  \textbf{Cutrone Benedetto},
+  \textbf{Grillo Giovanni},
+  \textbf{Magliano Dylan},
+  \textbf{Perno Marco}
+\\
+\\
+  Politecnico di Torino
+\\
+  \texttt{\{s338793, s333990, s347941, s337915, s339450\}@studenti.polito.it}
+}
 
 \begin{document}
 \pagestyle{plain}
@@ -117,7 +87,7 @@ Traditional ABSA tasks focus on extracting sentiment elements from text. The sem
 
 \subsection{Dimensional Sentiment Analysis}
 
-Dimensional sentiment analysis represents emotions in a continuous space defined by valence and arousal dimensions, based on Russell's circumplex model of affect. This representation enables more fine-grained distinctions between emotional states compared to categorical approaches. Recent work has begun integrating dimensional sentiment representations into ABSA frameworks, leading to the DimABSA paradigm.
+Dimensional sentiment analysis represents emotions in a continuous space defined by valence and arousal dimensions, based on Russell's circumplex model of affect~\citep{russell1980circumplex}. This representation enables more fine-grained distinctions between emotional states compared to categorical approaches. Recent work has begun integrating dimensional sentiment representations into ABSA frameworks, leading to the DimABSA paradigm.
 
 \subsection{Large Language Models for Information Extraction}
 
@@ -129,9 +99,17 @@ Traditional F1-score for extraction tasks relies on exact string matching, which
 
 \section{System Overview}
 
-We developed two pipeline-based systems for the DimASQP task, both following a two-stage architecture: (1) AOC extraction using Llama, and (2) VA prediction using BERT. The two systems differ in their approach to the first stage: Pipeline 1 uses few-shot learning, while Pipeline 2 employs LoRA fine-tuning.
+We developed two pipeline-based systems for the DimASQP task, both following a two-stage architecture: (1) AOC extraction using Llama, and (2) VA prediction using BERT. The two systems differ in their approach to the first stage: Pipeline 1 uses few-shot learning, while Pipeline 2 employs LoRA fine-tuning. Figure~\ref{fig:pipelines} illustrates the architectures of both pipelines.
 
-% [FIGURE 1: System Architecture Diagram showing the two-stage pipeline]
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{../images/pipeline1.png}
+\vspace{0.2cm}
+
+\includegraphics[width=\columnwidth]{../images/pipeline2.png}
+\caption{System architecture for both pipelines. Top: Pipeline 1 using few-shot Llama for AOC extraction. Bottom: Pipeline 2 using LoRA fine-tuned Llama for AOC extraction. Both pipelines share the same BERT-based VA prediction stage.}
+\label{fig:pipelines}
+\end{figure}
 
 \subsection{Dataset}
 
@@ -220,6 +198,15 @@ The Hungarian algorithm finds the optimal 1-to-1 assignment that maximizes total
 
 This approach guarantees that each gold triplet matches at most one prediction and vice versa, while properly handling cases where no valid match exists. Importantly, the VA distance penalty is applied only after the matching is established, affecting the final cF1 computation but not the matching itself.
 
+Figure~\ref{fig:hungarian_heatmap} illustrates an example of the Hungarian matching process, showing the semantic similarity matrix between gold and predicted triplets. Red boxes indicate the optimal 1-to-1 matches selected by the algorithm based on similarity scores above the threshold.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{../images/hungarian.png}
+\caption{Hungarian Matching heatmap example showing semantic similarity scores between gold triplets (rows) and predicted triplets (columns). Red boxes indicate optimal 1-to-1 matches selected by the Hungarian algorithm with similarity threshold > 0.925. Darker blue indicates higher semantic similarity.}
+\label{fig:hungarian_heatmap}
+\end{figure}
+
 The final semantic continuous recall and precision are:
 
 \begin{equation}
@@ -291,15 +278,31 @@ With semantic matching, the improvements are still significantly important:
 
 These results indicate that fine-tuning enables the model to better learn the extraction patterns and category taxonomy specific to the restaurant domain, leading to more accurate predictions with fewer false positives and false negatives.
 
-% [FIGURE: Bar chart comparing cF1 scores for exact vs semantic metrics across both pipelines]
-
 \subsection{Impact of Semantic Evaluation (RQ2)}
 
 The semantic evaluation metric reveals higher performance for both pipelines, indicating that exact matching underestimates actual model capabilities. Pipeline 1 improves from 30.51\% to 46.94\% cF1 (53.87\% relative improvement), while Pipeline 2 improves from 53.68\% to 63.37\% cF1 (18.06\% relative improvement).
 
 The larger improvement for Pipeline 1 suggests that the few-shot model produces more lexical variations that are semantically correct but fail exact matching. The fine-tuned model, having learned from specific training examples, produces predictions more aligned with the exact wording in annotations, thus benefiting less from semantic matching.
 
-Analysis of the semantic similarity scores shows that many predictions have cosine similarities between 0.85 and 0.95, indicating they are semantically close but lexically different from gold annotations. This validates our hypothesis that exact matching is overly strict for this task.
+Analysis of the semantic similarity scores shows that many predictions have cosine similarities between 0.85 and 0.95, indicating they are semantically close but lexically different from gold annotations. This validates our hypothesis that exact matching is overly strict for this task. Figure~\ref{fig:comparison_pipelines} illustrates the performance differences between VA-based and semantic-based metrics for both pipelines, while also showing the distribution of cTP scores.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.48\textwidth]{../images/histogram_pipeline1.png}
+\hfill
+\includegraphics[width=0.48\textwidth]{../images/histogram_pipeline2.png}
+\caption{Performance comparison between Pipeline 1 (Few-shot, left) and Pipeline 2 (LoRA, right). Each panel shows: (top) Precision, Recall, and F1 scores comparing VA-based and semantic-based metrics; (bottom) Distribution of cTP scores for both evaluation methods. The fine-tuned model achieves higher cTP scores overall, while semantic matching reveals additional valid predictions for both pipelines.}
+\label{fig:comparison_pipelines}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.48\textwidth]{../images/VA_pipeline1.png}
+\hfill
+\includegraphics[width=0.48\textwidth]{../images/VA_pipeline2.png}
+\caption{VA prediction error analysis. Left: Pipeline 1 (Few-shot) VA distance distribution. Right: Pipeline 2 (LoRA) VA distance distribution. Both show the distribution of normalized VA distances, with most errors concentrated in the lower range.}
+\label{fig:va_analysis}
+\end{figure*}
 
 \begin{table}[h]
 \centering
@@ -325,15 +328,11 @@ Improvement & - & +18.06\% \\
 
 \subsection{VA Prediction Error Analysis (RQ3)}
 
-We analyzed the distribution of VA prediction errors to understand their impact on the overall cF1 scores. The VA distance penalty contributes to reducing cTP values even for categorically correct predictions.
-
-% [FIGURE: Histogram showing distribution of VA distance errors]
+We analyzed the distribution of VA prediction errors to understand their impact on the overall cF1 scores. The VA distance penalty contributes to reducing cTP values even for categorically correct predictions. Figure~\ref{fig:va_analysis} shows the detailed VA prediction analysis for both pipelines.
 
 The BERT model achieves reasonable VA prediction accuracy, with most errors concentrated in the 0--2 range on the normalized distance scale (where maximum distance is $\sqrt{128} \approx 11.3$). Larger errors (distance $>$ 3) are relatively rare, occurring primarily for examples with ambiguous or complex sentiment expressions.
 
 Comparing the VA distance penalty contribution between the two pipelines, we observe that Pipeline 2 suffers slightly lower VA penalties on average. This may be because the more accurate AOC extraction provides better context for VA prediction, as the BERT model receives correct aspect and opinion terms as input.
-
-% [FIGURE: Histogram showing TP, FP, FN counts by aspect category]
 
 \subsection{Error Analysis by Category}
 
@@ -364,25 +363,7 @@ Our study has several limitations. First, experiments were conducted only on the
 \textbf{Future Work:}
 Several directions could extend this work. Evaluating on multi-domain and multilingual datasets would assess generalizability. Developing end-to-end models that jointly predict AOC and VA could reduce error propagation. Finally, studying optimal threshold selection methods for semantic matching would improve the metric's robustness.
 
-
 \bibliography{custom}
-
-\appendix
-
-\section{Figures Placeholder Guide}
-\label{sec:figures}
-
-The following figures should be inserted at the marked positions in the text:
-
-\begin{itemize}
-    \item \textbf{Figure 1} (Section 3): System Architecture Diagram showing the two-stage pipeline with Llama for AOC extraction followed by BERT for VA prediction. Should illustrate both Pipeline 1 (few-shot) and Pipeline 2 (LoRA fine-tuned) architectures.
-    
-    \item \textbf{Figure 2} (Section 4.1): Bar chart comparing cF1 scores using exact matching vs semantic matching for both pipelines. Four bars total: Pipeline 1 (exact: 30.51\%, semantic: 46.94\%) and Pipeline 2 (exact: 53.68\%, semantic: 63.37\%).
-    
-    \item \textbf{Figure 3} (Section 4.3): Histogram showing the distribution of VA distance errors. X-axis: normalized VA distance (0--11.3), Y-axis: frequency count. Most errors should be in the 0--2 range.
-    
-    \item \textbf{Figure 4} (Section 4.4): Histogram showing TP, FP, FN counts by aspect category (e.g., FOOD\#QUALITY, SERVICE\#GENERAL, AMBIENCE\#GENERAL, etc.). Grouped bar chart with three bars per category.
-\end{itemize}
 
 \end{document}
 
