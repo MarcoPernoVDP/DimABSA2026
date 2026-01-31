@@ -307,9 +307,6 @@ INPUT ..\images\VA_pipeline2.png
 INPUT .\acl_latex.bbl
 INPUT .\acl_latex.bbl
 INPUT acl_latex.bbl
-INPUT C:\Users\dylan\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8t.tfm
-INPUT C:\Users\dylan\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri8t.vf
-INPUT C:\Users\dylan\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT acl_latex.aux
 INPUT .\acl_latex.out
 INPUT .\acl_latex.out

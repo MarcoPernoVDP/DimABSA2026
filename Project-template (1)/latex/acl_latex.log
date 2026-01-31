@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.12.23)  31 JAN 2026 16:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.12.23)  31 JAN 2026 16:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -464,12 +464,12 @@ Underfull \hbox (badness 1430) in paragraph at lines 77--78
 
 
 ]
-<../images/pipeline1.png, id=113, 763.85374pt x 161.60374pt>
+<../images/pipeline1.png, id=119, 763.85374pt x 161.60374pt>
 File: ../images/pipeline1.png Graphic file (type png)
 <use ../images/pipeline1.png>
 Package pdftex.def Info: ../images/pipeline1.png  used on input line 106.
 (pdftex.def)             Requested size: 219.08614pt x 46.35098pt.
-<../images/pipeline2.png, id=115, 763.85374pt x 161.60374pt>
+<../images/pipeline2.png, id=121, 763.85374pt x 161.60374pt>
 File: ../images/pipeline2.png Graphic file (type png)
 <use ../images/pipeline2.png>
 Package pdftex.def Info: ../images/pipeline2.png  used on input line 109.
@@ -478,7 +478,7 @@ LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 12
  (C:\Users\dylan\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [2 <../images/pipeline1.png> <../images/pipeline2.png>] [3]
-<../images/hungarian.png, id=139, 818.8191pt x 714.7503pt>
+<../images/hungarian.png, id=148, 818.8191pt x 714.7503pt>
 File: ../images/hungarian.png Graphic file (type png)
 <use ../images/hungarian.png>
 Package pdftex.def Info: ../images/hungarian.png  used on input line 205.
@@ -562,22 +562,22 @@ Underfull \hbox (badness 1281) in paragraph at lines 265--266
  []
 
 [4 <../images/hungarian.png>]
-<../images/histogram_pipeline1.png, id=160, 1013.2254pt x 426.393pt>
+<../images/histogram_pipeline1.png, id=169, 1013.2254pt x 426.393pt>
 File: ../images/histogram_pipeline1.png Graphic file (type png)
 <use ../images/histogram_pipeline1.png>
 Package pdftex.def Info: ../images/histogram_pipeline1.png  used on input line 291.
 (pdftex.def)             Requested size: 218.51521pt x 91.95247pt.
-<../images/histogram_pipeline2.png, id=161, 1013.2254pt x 426.393pt>
+<../images/histogram_pipeline2.png, id=170, 1013.2254pt x 426.393pt>
 File: ../images/histogram_pipeline2.png Graphic file (type png)
 <use ../images/histogram_pipeline2.png>
 Package pdftex.def Info: ../images/histogram_pipeline2.png  used on input line 293.
 (pdftex.def)             Requested size: 218.51521pt x 91.95247pt.
-<../images/VA_pipeline1.png, id=162, 1004.553pt x 715.473pt>
+<../images/VA_pipeline1.png, id=171, 1004.553pt x 715.473pt>
 File: ../images/VA_pipeline1.png Graphic file (type png)
 <use ../images/VA_pipeline1.png>
 Package pdftex.def Info: ../images/VA_pipeline1.png  used on input line 300.
 (pdftex.def)             Requested size: 218.51521pt x 155.62503pt.
-<../images/VA_pipeline2.png, id=163, 1004.553pt x 715.473pt>
+<../images/VA_pipeline2.png, id=172, 1004.553pt x 715.473pt>
 File: ../images/VA_pipeline2.png Graphic file (type png)
 <use ../images/VA_pipeline2.png>
 Package pdftex.def Info: ../images/VA_pipeline2.png  used on input line 302.
@@ -606,17 +606,17 @@ Package rerunfilecheck Info: File `acl_latex.out' has not changed.
 (rerunfilecheck)             Checksum: C36CA3DA21DAA31633363C03B425B2BB;4708.
  ) 
 Here is how much of TeX's memory you used:
- 15406 strings out of 467871
- 251476 string characters out of 5418375
- 794540 words of memory out of 5000000
- 43745 multiletter control sequences out of 15000+600000
- 682979 words of font info for 266 fonts, out of 8000000 for 9000
+ 15412 strings out of 467871
+ 251664 string characters out of 5418375
+ 795611 words of memory out of 5000000
+ 43752 multiletter control sequences out of 15000+600000
+ 679825 words of font info for 263 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  90i,10n,93p,1297b,553s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex9.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dylan/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on acl_latex.pdf (6 pages, 659151 bytes).
+Output written on acl_latex.pdf (6 pages, 660233 bytes).
 PDF statistics:
- 273 PDF objects out of 1000 (max. 8388607)
- 51 named destinations out of 1000 (max. 500000)
- 59620 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 282 PDF objects out of 1000 (max. 8388607)
+ 54 named destinations out of 1000 (max. 500000)
+ 55524 words of extra memory for PDF output out of 61914 (max. 10000000)
 

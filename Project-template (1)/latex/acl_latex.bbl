@@ -1,9 +1,22 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{4}
 \providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Cai(2021)}]{cai2021aspect}
+Hongjie Cai. 2021.
+\newblock Aspect-category-opinion-sentiment quadruple extraction with implicit
+  aspects and opinions.
+
+\bibitem[{Peng(2020)}]{peng2020knowing}
+Haiyun Peng. 2020.
+\newblock Knowing what, how and why: A near complete solution for aspect-based
+  sentiment analysis.
+
+\bibitem[{Pontiki(2014)}]{pontiki2014semeval}
+Maria Pontiki. 2014.
+\newblock Semeval-2014 task 4: Aspect based sentiment analysis.
 
 \bibitem[{Russell(1980)}]{russell1980circumplex}
 James~A Russell. 1980.
 \newblock A circumplex model of affect.
-\newblock \emph{Journal of personality and social psychology}, 39(6):1161.
 
 \end{thebibliography}
