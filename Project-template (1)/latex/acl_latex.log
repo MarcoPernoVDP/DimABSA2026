@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.1)  30 JAN 2026 21:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.1)  31 JAN 2026 11:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -450,22 +450,22 @@ Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verbat
 ) (C:\Users\marco\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 88.
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 89.
  (C:\Users\marco\AppData\Local\Programs\MiKTeX\tex/latex/base\ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 88.
+LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 89.
  (C:\Users\marco\AppData\Local\Programs\MiKTeX\tex/latex/inconsolata\t1zi4.fd
 File: t1zi4.fd 2018/01/14 T1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 12.0pt on input line 88.
+(Font)              scaled to size 12.0pt on input line 89.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `zi4' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Underfull \hbox (badness 1430) in paragraph at lines 106--107
+Underfull \hbox (badness 1430) in paragraph at lines 107--108
 []\T1/ptm/b/n/10.95 (+20) RQ1: \T1/ptm/m/n/10.95 (+20) How do few-shot and fine-tuned
  []
 
@@ -477,102 +477,102 @@ Underfull \vbox (badness 2359) has occurred while \output is active []
 
 
 ]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 145.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 146.
  (C:\Users\marco\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [2]
 
-LaTeX Font Warning: Command \small invalid in math mode on input line 216.
+LaTeX Font Warning: Command \small invalid in math mode on input line 217.
 
-LaTeX Font Info:    Calculating math sizes for size <> on input line 218.
+LaTeX Font Info:    Calculating math sizes for size <> on input line 219.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.7> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.5> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `U/lasy/m/n' in size <> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `U/lasy/m/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
 LaTeX Font Warning: Font shape `U/lasy/m/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 218.
+(Font)              size <5> substituted on input line 219.
 
 
-LaTeX Font Warning: Command \small invalid in math mode on input line 221.
+LaTeX Font Warning: Command \small invalid in math mode on input line 222.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 225--226
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
 []\T1/ptm/m/n/10.95 (+20) where $[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 VA[]; VA[]\OT1/cmr/m/n/10.95 ) =
  []
 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 [3]
-Underfull \hbox (badness 1281) in paragraph at lines 237--238
+Underfull \hbox (badness 1281) in paragraph at lines 270--271
 []\T1/ptm/m/n/10.95 (+20) The fine-tuned model shows im-prove-ments
  []
 
 
-Underfull \hbox (badness 1648) in paragraph at lines 272--273
+Underfull \hbox (badness 1648) in paragraph at lines 325--326
 \T1/ptm/m/n/10.95 (+20) rarer cat-e-gories like AM-BI-ENCE#GENERAL
  []
 
-
-Underfull \hbox (badness 1484) in paragraph at lines 288--289
+[4]
+Underfull \hbox (badness 1484) in paragraph at lines 341--342
 []\T1/ptm/m/n/10.95 (+20) Fine-tuning with LoRA sub-stan-tially im-
  []
 
-[4]
 No file acl_latex.bbl.
-[5
-
-] (acl_latex.aux)
+[5] (acl_latex.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
@@ -583,20 +583,20 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 4.5pt have occurred.
 
 Package rerunfilecheck Info: File `acl_latex.out' has not changed.
-(rerunfilecheck)             Checksum: B419ADDCF39AC06A2DF32DDE8262BDE9;4836.
+(rerunfilecheck)             Checksum: C0DD5FE6B82F3F502CE99FB8248C8CC2;4884.
  ) 
 Here is how much of TeX's memory you used:
- 15207 strings out of 474486
- 249325 string characters out of 5743756
- 1944542 words of memory out of 5000000
- 37014 multiletter control sequences out of 15000+600000
- 602264 words of font info for 223 fonts, out of 8000000 for 9000
+ 15243 strings out of 474486
+ 249814 string characters out of 5743756
+ 1946542 words of memory out of 5000000
+ 37029 multiletter control sequences out of 15000+600000
+ 608619 words of font info for 235 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,10n,93p,1218b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex9.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb>
-Output written on acl_latex.pdf (5 pages, 213954 bytes).
+ 90i,10n,93p,1218b,532s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex9.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/marco/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on acl_latex.pdf (5 pages, 230336 bytes).
 PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 43 named destinations out of 1000 (max. 500000)
- 47305 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 245 PDF objects out of 1000 (max. 8388607)
+ 45 named destinations out of 1000 (max. 500000)
+ 55497 words of extra memory for PDF output out of 61914 (max. 10000000)
 

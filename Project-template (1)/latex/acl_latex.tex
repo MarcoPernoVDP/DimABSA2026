@@ -2,7 +2,7 @@
 
 % Change "review" to "final" to generate the final (sometimes called camera-ready) version.
 % Change to "preprint" to generate a non-anonymous version with page numbers.
-\usepackage{acl}
+\usepackage[preprint]{acl}
 
 % Standard package includes
 \usepackage{times}
@@ -85,6 +85,7 @@
 %}
 
 \begin{document}
+\pagestyle{plain}
 \maketitle
 \begin{abstract}
 Dimensional Aspect-Based Sentiment Analysis (DimABSA) extends traditional ABSA by replacing categorical sentiment labels with continuous valence-arousal (VA) scores, enabling more nuanced emotional representations. In this work, we address the DimASQP task, which requires extracting quadruplets consisting of aspect terms, categories, opinion terms, and VA scores from restaurant reviews. We compare two approaches: a few-shot Llama model and a LoRA fine-tuned Llama model for aspect-opinion-category extraction, both combined with a BERT model for VA prediction. Our experiments show that fine-tuning improves performance significantly, achieving 53\% cF1 with exact matching compared to 30.66\% for few-shot learning. Additionally, we propose a novel semantic evaluation metric based on embedding similarity that better captures partial matches, further improving cF1 to 63.07\% for the fine-tuned approach. Our results demonstrate the effectiveness of fine-tuning and the importance of semantic-aware evaluation metrics for DimABSA tasks.
@@ -144,7 +145,7 @@ The first pipeline employs Llama in a few-shot setting for extracting aspect ter
 \begin{itemize}
     \item Task description explaining the DimASQP objective
     \item Format specifications for quadruplet output
-    \item Few-shot examples (typically 3-5) from the training set
+    \item Few-shot examples from the training set
     \item The input text to be analyzed
 \end{itemize}
 
